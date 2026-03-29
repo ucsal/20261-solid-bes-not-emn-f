@@ -11,6 +11,7 @@ public class App {
 	static final IRepoProvas repoProvas = new RepoProvas();
 	static final IRepoQuestoes repoQuestoes = new RepoQuestoes();
 	static final IRepoTentativas repoTentativas = new RepoTentativas();
+	static final ICalcularNota calculaNota = new CalcularNota();
 
 	private static final Scanner in = new Scanner(System.in);
 
@@ -186,25 +187,16 @@ public class App {
 
 		repoTentativas.salvar(tentativa);
 
-		int nota = calcularNota(tentativa);
+		double nota = calculaNota.calcular(tentativa.getRespostas());
 		System.out.println("\n--- Fim da Prova ---");
 		System.out.println("Nota (acertos): " + nota + " / " + tentativa.getRespostas().size());
-	}
-
-	public static int calcularNota(Tentativa tentativa) {
-		int acertos = 0;
-		for (var r : tentativa.getRespostas()) {
-			if (r.isCorreta())
-				acertos++;
-		}
-		return acertos;
 	}
 
 	static void listarTentativas() {
 		System.out.println("\n--- Tentativas ---");
 		for (var t : repoTentativas.listarTodos()) {
 			System.out.printf("#%d | participante=%d | prova=%d | nota=%d/%d%n", t.getId(), t.getParticipanteId(),
-					t.getProvaId(), calcularNota(t), t.getRespostas().size());
+					t.getProvaId(), calculaNota.calcular(t.getRespostas()), t.getRespostas().size());
 		}
 	}
 
