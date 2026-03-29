@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.com.ucsal.olimpiadas.Participante;
 
-public class RepositorioDeParticipantes {
+public class RepoParticipantes {
     private long proximoParticipanteId = 1;
     private final List<Participante> participantes = new ArrayList<>();
 

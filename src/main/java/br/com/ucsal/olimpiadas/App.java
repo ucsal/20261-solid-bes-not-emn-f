@@ -2,17 +2,17 @@ package br.com.ucsal.olimpiadas;
 
 import java.util.Scanner;
 
-import br.com.ucsal.olimpiadas.repository.RepositorioDeParticipantes;
-import br.com.ucsal.olimpiadas.repository.RepositorioDeProvas;
-import br.com.ucsal.olimpiadas.repository.RepositorioDeQuestoes;
-import br.com.ucsal.olimpiadas.repository.RepositorioDeTentativas;
+import br.com.ucsal.olimpiadas.repository.RepoParticipantes;
+import br.com.ucsal.olimpiadas.repository.RepoProvas;
+import br.com.ucsal.olimpiadas.repository.RepoQuestoes;
+import br.com.ucsal.olimpiadas.repository.RepoTentativas;
 
 public class App {
 
-	static final RepositorioDeParticipantes repoParticipantes = new RepositorioDeParticipantes();
-	static final RepositorioDeProvas repoProvas = new RepositorioDeProvas();
-	static final RepositorioDeQuestoes repoQuestoes = new RepositorioDeQuestoes();
-	static final RepositorioDeTentativas repoTentativas = new RepositorioDeTentativas();
+	static final RepoParticipantes repoParticipantes = new RepoParticipantes();
+	static final RepoProvas repoProvas = new RepoProvas();
+	static final RepoQuestoes repoQuestoes = new RepoQuestoes();
+	static final RepoTentativas repoTentativas = new RepoTentativas();
 
 	private static final Scanner in = new Scanner(System.in);
 

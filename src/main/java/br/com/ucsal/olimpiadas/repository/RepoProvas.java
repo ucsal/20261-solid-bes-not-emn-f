@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.com.ucsal.olimpiadas.Prova;
 
-public class RepositorioDeProvas {
+public class RepoProvas {
     private long proximaProvaId = 1;
     private final List<Prova> provas = new ArrayList<>();
 

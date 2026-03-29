@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.com.ucsal.olimpiadas.Questao;
 
-public class RepositorioDeQuestoes {
+public class RepoQuestoes {
     private long proximaQuestaoId = 1;
     private final List<Questao> questoes = new ArrayList<>();
 

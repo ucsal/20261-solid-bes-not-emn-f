@@ -5,7 +5,7 @@ import java.util.List;
 
 import br.com.ucsal.olimpiadas.Tentativa;
 
-public class RepositorioDeTentativas {
+public class RepoTentativas {
     private long proximaTentativaId = 1;
     private final List<Tentativa> tentativas = new ArrayList<>();
 
