@@ -1,20 +1,18 @@
 package br.com.ucsal.olimpiadas;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
+
+import br.com.ucsal.olimpiadas.repository.RepositorioDeParticipantes;
+import br.com.ucsal.olimpiadas.repository.RepositorioDeProvas;
+import br.com.ucsal.olimpiadas.repository.RepositorioDeQuestoes;
+import br.com.ucsal.olimpiadas.repository.RepositorioDeTentativas;
 
 public class App {
 
-	static long proximoParticipanteId = 1;
-	static long proximaProvaId = 1;
-	static long proximaQuestaoId = 1;
-	static long proximaTentativaId = 1;
-
-	static final List<Participante> participantes = new ArrayList<>();
-	static final List<Prova> provas = new ArrayList<>();
-	static final List<Questao> questoes = new ArrayList<>();
-	static final List<Tentativa> tentativas = new ArrayList<>();
+	static final RepositorioDeParticipantes repoParticipantes = new RepositorioDeParticipantes();
+	static final RepositorioDeProvas repoProvas = new RepositorioDeProvas();
+	static final RepositorioDeQuestoes repoQuestoes = new RepositorioDeQuestoes();
+	static final RepositorioDeTentativas repoTentativas = new RepositorioDeTentativas();
 
 	private static final Scanner in = new Scanner(System.in);
 
@@ -32,16 +30,16 @@ public class App {
 			System.out.print("> ");
 
 			switch (in.nextLine()) {
-			case "1" -> cadastrarParticipante();
-			case "2" -> cadastrarProva();
-			case "3" -> cadastrarQuestao();
-			case "4" -> aplicarProva();
-			case "5" -> listarTentativas();
-			case "0" -> {
-				System.out.println("tchau");
-				return;
-			}
-			default -> System.out.println("opção inválida");
+				case "1" -> cadastrarParticipante();
+				case "2" -> cadastrarProva();
+				case "3" -> cadastrarQuestao();
+				case "4" -> aplicarProva();
+				case "5" -> listarTentativas();
+				case "0" -> {
+					System.out.println("tchau");
+					return;
+				}
+				default -> System.out.println("opção inválida");
 			}
 		}
 	}
@@ -59,11 +57,10 @@ public class App {
 		}
 
 		var p = new Participante();
-		p.setId(proximoParticipanteId++);
 		p.setNome(nome);
 		p.setEmail(email);
 
-		participantes.add(p);
+		repoParticipantes.salvar(p);
 		System.out.println("Participante cadastrado: " + p.getId());
 	}
 
@@ -77,15 +74,14 @@ public class App {
 		}
 
 		var prova = new Prova();
-		prova.setId(proximaProvaId++);
 		prova.setTitulo(titulo);
 
-		provas.add(prova);
+		repoProvas.salvar(prova);
 		System.out.println("Prova criada: " + prova.getId());
 	}
 
 	static void cadastrarQuestao() {
-		if (provas.isEmpty()) {
+		if (repoProvas.listarTodos().isEmpty()) {
 			System.out.println("não há provas cadastradas");
 			return;
 		}
@@ -114,24 +110,22 @@ public class App {
 		}
 
 		var q = new Questao();
-		q.setId(proximaQuestaoId++);
 		q.setProvaId(provaId);
 		q.setEnunciado(enunciado);
 		q.setAlternativas(alternativas);
 		q.setAlternativaCorreta(correta);
 
-		questoes.add(q);
+		repoQuestoes.salvar(q);
 
 		System.out.println("Questão cadastrada: " + q.getId() + " (na prova " + provaId + ")");
 	}
 
-
 	static void aplicarProva() {
-		if (participantes.isEmpty()) {
+		if (repoParticipantes.listarTodos().isEmpty()) {
 			System.out.println("cadastre participantes primeiro");
 			return;
 		}
-		if (provas.isEmpty()) {
+		if (repoProvas.listarTodos().isEmpty()) {
 			System.out.println("cadastre provas primeiro");
 			return;
 		}
@@ -144,7 +138,7 @@ public class App {
 		if (provaId == null)
 			return;
 
-		var questoesDaProva = questoes.stream().filter(q -> q.getProvaId() == provaId).toList();
+		var questoesDaProva = repoQuestoes.listarTodos().stream().filter(q -> q.getProvaId() == provaId).toList();
 
 		if (questoesDaProva.isEmpty()) {
 			System.out.println("esta prova não possui questões cadastradas");
@@ -152,7 +146,6 @@ public class App {
 		}
 
 		var tentativa = new Tentativa();
-		tentativa.setId(proximaTentativaId++);
 		tentativa.setParticipanteId(participanteId);
 		tentativa.setProvaId(provaId);
 
@@ -166,7 +159,7 @@ public class App {
 			imprimirTabuleiroFen(q.getFenInicial());
 
 			for (var alt : q.getAlternativas()) {
-			    System.out.println(alt);
+				System.out.println(alt);
 			}
 
 			System.out.print("Sua resposta (A–E): ");
@@ -186,7 +179,7 @@ public class App {
 			tentativa.getRespostas().add(r);
 		}
 
-		tentativas.add(tentativa);
+		repoTentativas.salvar(tentativa);
 
 		int nota = calcularNota(tentativa);
 		System.out.println("\n--- Fim da Prova ---");
@@ -204,23 +197,22 @@ public class App {
 
 	static void listarTentativas() {
 		System.out.println("\n--- Tentativas ---");
-		for (var t : tentativas) {
+		for (var t : repoTentativas.listarTodos()) {
 			System.out.printf("#%d | participante=%d | prova=%d | nota=%d/%d%n", t.getId(), t.getParticipanteId(),
 					t.getProvaId(), calcularNota(t), t.getRespostas().size());
 		}
 	}
 
-
 	static Long escolherParticipante() {
 		System.out.println("\nParticipantes:");
-		for (var p : participantes) {
+		for (var p : repoParticipantes.listarTodos()) {
 			System.out.printf("  %d) %s%n", p.getId(), p.getNome());
 		}
 		System.out.print("Escolha o id do participante: ");
 
 		try {
 			long id = Long.parseLong(in.nextLine());
-			boolean existe = participantes.stream().anyMatch(p -> p.getId() == id);
+			boolean existe = repoParticipantes.listarTodos().stream().anyMatch(p -> p.getId() == id);
 			if (!existe) {
 				System.out.println("id inválido");
 				return null;
@@ -234,14 +226,14 @@ public class App {
 
 	static Long escolherProva() {
 		System.out.println("\nProvas:");
-		for (var p : provas) {
+		for (var p : repoProvas.listarTodos()) {
 			System.out.printf("  %d) %s%n", p.getId(), p.getTitulo());
 		}
 		System.out.print("Escolha o id da prova: ");
 
 		try {
 			long id = Long.parseLong(in.nextLine());
-			boolean existe = provas.stream().anyMatch(p -> p.getId() == id);
+			boolean existe = repoProvas.listarTodos().stream().anyMatch(p -> p.getId() == id);
 			if (!existe) {
 				System.out.println("id inválido");
 				return null;
@@ -287,16 +279,14 @@ public class App {
 		System.out.println();
 	}
 
-
 	static void seed() {
 
 		var prova = new Prova();
-		prova.setId(proximaProvaId++);
+
 		prova.setTitulo("Olimpíada 2026 • Nível 1 • Prova A");
-		provas.add(prova);
+		repoProvas.salvar(prova);
 
 		var q1 = new Questao();
-		q1.setId(proximaQuestaoId++);
 		q1.setProvaId(prova.getId());
 
 		q1.setEnunciado("""
@@ -311,6 +301,6 @@ public class App {
 
 		q1.setAlternativaCorreta('C');
 
-		questoes.add(q1);
+		repoQuestoes.salvar(q1);
 	}
 }
