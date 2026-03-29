@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ucsal.olimpiadas.Questao;
+import br.com.ucsal.olimpiadas.interfaces.IRepoQuestoes;
 
-public class RepoQuestoes {
+public class RepoQuestoes implements IRepoQuestoes {
     private long proximaQuestaoId = 1;
     private final List<Questao> questoes = new ArrayList<>();
 

@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ucsal.olimpiadas.Tentativa;
+import br.com.ucsal.olimpiadas.interfaces.IRepoTentativas;
 
-public class RepoTentativas {
+public class RepoTentativas implements IRepoTentativas {
     private long proximaTentativaId = 1;
     private final List<Tentativa> tentativas = new ArrayList<>();
 

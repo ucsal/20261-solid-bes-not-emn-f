@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ucsal.olimpiadas.Prova;
+import br.com.ucsal.olimpiadas.interfaces.IRepoProvas;
 
-public class RepoProvas {
+public class RepoProvas implements IRepoProvas {
     private long proximaProvaId = 1;
     private final List<Prova> provas = new ArrayList<>();
 

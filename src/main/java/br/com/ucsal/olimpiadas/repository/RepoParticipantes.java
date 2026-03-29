@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ucsal.olimpiadas.Participante;
+import br.com.ucsal.olimpiadas.interfaces.IRepoParticipantes;
 
-public class RepoParticipantes {
+public class RepoParticipantes implements IRepoParticipantes{
     private long proximoParticipanteId = 1;
     private final List<Participante> participantes = new ArrayList<>();
 
