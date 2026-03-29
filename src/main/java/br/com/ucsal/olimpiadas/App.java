@@ -101,13 +101,13 @@ public class App {
 		System.out.print("Alternativa correta (A–E): ");
 		char correta;
 		try {
-			correta = Questao.normalizar(in.nextLine().trim().charAt(0));
+			correta = QuestaoObjetiva.normalizar(in.nextLine().trim().charAt(0));
 		} catch (Exception e) {
 			System.out.println("alternativa inválida");
 			return;
 		}
 
-		var q = new Questao();
+		var q = new QuestaoObjetiva();
 		q.setProvaId(provaId);
 		q.setEnunciado(enunciado);
 		q.setAlternativas(alternativas);
@@ -153,28 +153,35 @@ public class App {
 			System.out.println("\nQuestão #" + q.getId());
 			System.out.println(q.getEnunciado());
 
-			System.out.println("Posição inicial:");
-			imprimirTabuleiroFen(q.getFenInicial());
+			if (q instanceof ITabuleiro) {
+				System.out.println("Posição inicial:");
+				String fen = ((ITabuleiro) q).getFenInicial();
+				imprimirTabuleiroFen(fen);
 
-			for (var alt : q.getAlternativas()) {
-				System.out.println(alt);
 			}
 
-			System.out.print("Sua resposta (A–E): ");
-			char marcada;
-			try {
-				marcada = Questao.normalizar(in.nextLine().trim().charAt(0));
-			} catch (Exception e) {
-				System.out.println("resposta inválida (marcando como errada)");
-				marcada = 'X';
+			if (q instanceof QuestaoObjetiva) {
+				QuestaoObjetiva qo = (QuestaoObjetiva) q;
+				for (var alt : qo.getAlternativas()) {
+					System.out.println(alt);
+				}
+
+				System.out.print("Sua resposta (A–E): ");
+				char marcada;
+				try {
+					marcada = QuestaoXadrez.normalizar(in.nextLine().trim().charAt(0));
+				} catch (Exception e) {
+					System.out.println("resposta inválida (marcando como errada)");
+					marcada = 'X';
+				}
+
+				var r = new Resposta();
+				r.setQuestaoId(q.getId());
+				r.setAlternativaMarcada(marcada);
+				r.setCorreta(qo.isRespostaCorreta(marcada));
+
+				tentativa.getRespostas().add(r);
 			}
-
-			var r = new Resposta();
-			r.setQuestaoId(q.getId());
-			r.setAlternativaMarcada(marcada);
-			r.setCorreta(q.isRespostaCorreta(marcada));
-
-			tentativa.getRespostas().add(r);
 		}
 
 		repoTentativas.salvar(tentativa);
@@ -284,7 +291,7 @@ public class App {
 		prova.setTitulo("Olimpíada 2026 • Nível 1 • Prova A");
 		repoProvas.salvar(prova);
 
-		var q1 = new Questao();
+		var q1 = new QuestaoXadrez();
 		q1.setProvaId(prova.getId());
 
 		q1.setEnunciado("""
@@ -294,11 +301,8 @@ public class App {
 				""");
 
 		q1.setFenInicial("6k1/5ppp/8/8/8/7Q/6PP/6K1 w - - 0 1");
-
 		q1.setAlternativas(new String[] { "A) Qh7#", "B) Qf5#", "C) Qc8#", "D) Qh8#", "E) Qe6#" });
-
 		q1.setAlternativaCorreta('C');
-
 		repoQuestoes.salvar(q1);
 	}
 }
