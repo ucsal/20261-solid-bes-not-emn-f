@@ -2,6 +2,7 @@ package br.com.ucsal.olimpiadas;
 
 import java.util.List;
 
+import br.com.ucsal.olimpiadas.domain.entitity.Resposta;
 import br.com.ucsal.olimpiadas.interfaces.ICalcularNota;
 
 public class CalcularNota implements ICalcularNota {

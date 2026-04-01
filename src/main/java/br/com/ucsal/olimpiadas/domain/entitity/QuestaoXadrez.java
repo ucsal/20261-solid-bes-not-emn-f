@@ -1,4 +1,4 @@
-package br.com.ucsal.olimpiadas;
+package br.com.ucsal.olimpiadas.domain.entitity;
 
 import br.com.ucsal.olimpiadas.interfaces.ITabuleiro;
 

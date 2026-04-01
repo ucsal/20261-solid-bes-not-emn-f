@@ -1,9 +1,9 @@
-package br.com.ucsal.olimpiadas.repository;
+package br.com.ucsal.olimpiadas.domain.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ucsal.olimpiadas.Questao;
+import br.com.ucsal.olimpiadas.domain.entitity.Questao;
 import br.com.ucsal.olimpiadas.interfaces.IRepoQuestoes;
 
 public class RepoQuestoes implements IRepoQuestoes {

@@ -1,9 +1,9 @@
-package br.com.ucsal.olimpiadas.repository;
+package br.com.ucsal.olimpiadas.domain.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ucsal.olimpiadas.Participante;
+import br.com.ucsal.olimpiadas.domain.entitity.Participante;
 import br.com.ucsal.olimpiadas.interfaces.IRepoParticipantes;
 
 public class RepoParticipantes implements IRepoParticipantes{

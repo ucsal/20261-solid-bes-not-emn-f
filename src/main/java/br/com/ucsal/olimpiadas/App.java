@@ -3,7 +3,8 @@ package br.com.ucsal.olimpiadas;
 import java.util.Scanner;
 
 import br.com.ucsal.olimpiadas.interfaces.*;
-import br.com.ucsal.olimpiadas.repository.*;
+import br.com.ucsal.olimpiadas.domain.entitity.*;
+import br.com.ucsal.olimpiadas.domain.repository.*;
 
 public class App {
 
